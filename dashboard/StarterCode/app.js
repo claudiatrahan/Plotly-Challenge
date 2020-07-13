@@ -15,6 +15,7 @@ function showMetadata(sample) {
             demo.append("h5").text(`${key}: ${value}`)
         })
         gaugeChart(entry[0].wfreq)
+        console.log(entry[0].wfreq)
 
     });  
 }
@@ -108,35 +109,79 @@ function bubbleChart(sample) {
 
 function gaugeChart(washes){
         var data = [{ 
-        type: 'scatter',
-        x: [0], y:[0],
-        marker: {size: 14, color:'850000'},
-        showlegend: false,
-        name: 'Belly Button Washing Frequency',
-        text: washes,
-        hoverinfo: 'text+name'},
-        { values: [1,1,1,1,1,1,1,1,1,9],
-            rotation: 90,
-            text: ['8-9','7-8','6-7','5-6', '4-5','3-4','2-3','1-2','0-1'],
-            textinfo: 'text',
-            textposition:'inside',
-            marker: {colors:[
-                'rgba(14, 127, 0, .5)', 'rgba(110, 154, 22, .5)',
-                'rgba(249, 168, 37, .5)', 'rgba(183,28,28, .5)',
-                'rgba(0, 0, 0, 0.5)', 'rgba(255,72,196,.5)', 
-                'rgba(43,209,252,.5)', 'rgba(243,234,95, .5)', 
-                'rgba(192,77,249,.5)']},
-        hoverinfo: 'label',
-        hole: .5,
-        type: 'pie',
-        showlegend: false}];
-            
-          
+            type: 'scatter',
+            x: [0], y:[0],
+            marker: {
+                size: 14, 
+                color:'850000'
+            },
+            showlegend: false,
+            name: 'Belly Button Washing Frequency',
+            text: washes,
+            hoverinfo: 'text+name'},
+            { values: [1,1,1,1,1,1,1,1,1,9],
+                rotation: 90,
+                text: ['8-9','7-8','6-7','5-6', '4-5','3-4','2-3','1-2','0-1'],
+                textinfo: 'text',
+                textposition:'inside',
+                marker: {
+                colors:[
+                'rgba(255,72,196,.5)', 
+                'rgba(43,209,252,.5)',
+                'rgba(249, 168, 37, .5)', 
+                'rgba(243,234,95, .5)',
+                'rgba(183,28,28, .5)',
+                'rgba(255,72,196,.5)', 
+                'rgba(43,209,252,.5)', 
+                'rgba(243,234,95, .5)', 
+                'rgba(192,77,249,.5)',
+                'white'
+            ]
+            },
+            hoverinfo: 'label',
+            hole: .5,
+            type: 'pie',
+            showlegend: false}];
+        var level = washes * 20;    
+        var degrees = 180 - level;
+        var radius = .5;
+        var radians = degrees * Math.PI / 180;
+        var aX = 0.025 * Math.cos((degrees-90) * Math.PI / 180);
+        var aY = 0.025 * Math.sin((degrees-90) * Math.PI / 180);
+        var bX = -0.025 * Math.cos((degrees-90) * Math.PI / 180);
+        var bY = -0.025 * Math.sin((degrees-90) * Math.PI / 180);
+        var cX = radius * Math.cos(radians);
+        var cY = radius * Math.sin(radians);
+       
+        var path = 'M ' + aX + ' ' + aY +
+                    ' L ' + bX + ' ' + bY +
+                    ' L ' + cX + ' ' + cY +
+                    ' Z';  
         var layout = {
+            title: "Belly Button Washing Frequency",
+            shapes:[{
+                type: 'path',
+                path: path,
+                fillcolor: '850000',
+                line: {
+                  color: '850000'
+                }
+              }],
             width: 500,
             height: 400,
-            margin: { t: 25, r: 25, l: 25, b: 25 },
-            
+            margin: { t: 80, r: 25, l: 25, b: 25 },
+            xaxis: {
+                zeroline:false, 
+                showticklabels:false,
+                showgrid: false, 
+                range: [-1, 1]
+            },
+            yaxis: {
+                zeroline:false, 
+                showticklabels:false,
+                showgrid: false, 
+                range: [-1, 1]
+            },
             font: { color: "darkblue", family: "Arial" }
           };
           
